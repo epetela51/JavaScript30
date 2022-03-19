@@ -7,6 +7,74 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+
+  let canvas = document.querySelector('#draw');
+  let ctx = canvas.getContext('2d'); //CTX is where the drawings take place on the canvas
+
+  //this sets the canvas to the size of the window (which overrides what the initial width & height are set to above in the HTML)
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  //This sets the actual line that is being drawn in terms of color, square or round, etc.
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 100;
+
+  //This only lets us draw when the mouse is held down.  This is a flag that will change as needed
+  let isDrawing = false;
+
+  //The starting & ending point when drawing on the page
+  let lastX = 0;
+  let lastY = 0;
+
+  //this is to add colors to the drawing line
+  let hue = 0;
+  let direction = true;
+
+  function draw(e) {
+    if(!isDrawing) return //stop the function from running when they are not moused
+    console.log(e);
+
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; // starting color of the stroke
+    ctx.beginPath();
+    //This is the starting point of the drawing
+    ctx.moveTo(lastX, lastY);
+    //This is the ending point of the drawing
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    hue++ // updates the color of the drawing line
+
+    if(hue >= 360) {
+      hue = 0;
+    }
+
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+      direction = !direction;
+    }
+
+    //Depending on the direction it either slowly increases or decreases the line width until it's somewhere between 1 & 100
+    if(direction) {
+      ctx.lineWidth++;
+    } else {
+      ctx.lineWidth--;
+    }
+
+  }
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    //This will update the starting point so new lines can be draw independent of one another
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  });
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false); // this tells it that if the mouse goes off the page/window to make sure when it comes back it's not still drawing
+  
+  
+
 </script>
 
 <style>
