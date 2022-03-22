@@ -18,28 +18,63 @@
     }
 
     // Regular
+    console.log('hello')
 
     // Interpolated
 
     // Styled
+    console.log('%c I am some great text', 'font-size: 50px; background: green')
 
     // warning!
+    console.warn('Oh NOOOOOO')
 
     // Error :|
+    console.error('shit!')
 
     // Info
+    console.info('Bananas are yellow')
 
-    // Testing
+    // Testing -- this will only throw the second argument if the first one is wrong.  If it's true it won't throw any message
+    console.assert(1 === 2, 'You did not select the right element')
 
     // clearing
+    console.clear()
 
     // Viewing DOM Elements
+    let p = document.querySelector('p')
+
+    console.log(p);
+    console.dir(p);
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`);
+      console.log(`This is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+      console.groupEnd(`${dog.name}`) //make sure you pass it the same thing as the starting group so it knows where to end
+    })
 
     // counting
+    console.count('wes')
+    console.count('Steve')
+    console.count('wes')
+    console.count('wes')
+    console.count('Steve')
+    console.count('Steve')
+    console.count('wes')
 
     // timing
+    console.time('fetching some data');
+    fetch('https://api.github.com/users/wesbos')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching some data'); // make sure you pass it the same thing that was passed at the original console.time
+        console.log(data);
+      })
+
+    //this will only work if they all have similar properties?
+    console.table(dogs);
 
   </script>
 </body>
