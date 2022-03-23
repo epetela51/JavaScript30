@@ -7,6 +7,24 @@
 </head>
 <body>
 <script>
+
+  // array holds any key that is being pressed
+  let pressed = []
+  let secretCode = 'erock'
+
+  window.addEventListener('keyup', (e) => {
+    console.log(e.key);
+    pressed.push(e.key); // pushes the key that is being pressed into an array
+    pressed.splice(-secretCode.length -1, pressed.length - secretCode.length); // this starts looking at the end of the array to keep only the length of the secretCode (in this case it's 6 letters)
+
+    // pressed.join joins the the array into a string and looks to see if the secretcode is the string
+    if (pressed.join('').includes(secretCode)) {
+      console.log("You got the code!")
+      cornify_add(); // this puts unicorns on the page every time you get it right
+    }
+    console.log(pressed);
+  });
+
 </script>
 </body>
 </html>
