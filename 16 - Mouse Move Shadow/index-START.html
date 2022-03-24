@@ -35,6 +35,39 @@
   </style>
 
 <script>
+
+  let hero = document.querySelector('.hero');
+  let text = document.querySelector('h1');
+
+  // how far the shadow will move off center
+  let walk = 100; // 100px
+
+  function shadow (e) {
+    //grab height & width of the hero class which hold the text on screen
+    let width = hero.offsetWidth;
+    let height = hero.offsetHeight;
+
+    // this grabs position of cursor
+    let { offsetX: x, offsetY: y } = e;
+
+    // before if hovering over img/text was resetting the x & y
+    // Doing this will add the area hovering over the img/text with everything around it
+    if (this !== e.target) {
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+
+    // this helps keep the mouse and shadow from going to far one way or another
+    let xWalk = Math.round((x / width * walk) - (walk / 2));
+    let yWalk = Math.round((y / width * walk) - (walk / 2));
+
+    // Adds dynamic shadow to move based on the xWalk & yWalk px
+    text.style.textShadow = `${xWalk}px ${yWalk}px 0 blue`;
+
+  }
+
+  hero.addEventListener('mousemove', shadow);
+
 </script>
 </body>
 </html>
