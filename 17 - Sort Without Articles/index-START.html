@@ -48,6 +48,29 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+//function that will use a regex to grab the first words that aren't needed and remove them
+function strip(bandName) {
+  // if no spaces after the regex (i.e. a ) then it won't work properly.  Spaces needed
+  return bandName.replace(/^(a |the |an )/i, '').trim();
+}
+
+// if the stripped name is greater than another then put it in proper sort order based on 1 and -1
+let sortedBands = bands.sort(function (a,b) {
+  if (strip(a) > strip(b)) {
+    return 1;
+  } else {
+    return -1;
+  }
+})
+
+// puts the bands onto the page using innerHTML using <li>
+document.querySelector('#bands').innerHTML = 
+  sortedBands
+    .map(band => `<li>${band}</li>`)
+    .join(''); //.join will put this into 1 giant string.  If you don't put that then there will be commas that are put in there
+
+console.log(sortedBands);
+
 
 </script>
 
