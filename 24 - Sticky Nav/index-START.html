@@ -55,6 +55,23 @@
 
 <script>
 
+  let nav = document.querySelector('#main');
+  let topOfNav = nav.offsetTop;
+  
+  function fixNav() {
+    if(window.scrollY >= topOfNav) {
+      // this sets the padding to the height of the navbar to offset the jerking motion when scrolling related to the fixed nav bar
+      document.body.style.paddingTop = nav.offsetHeight + 'px';
+      document.body.classList.add('fixed-nav');
+    } else {
+      // sets the padding top back to 0 when the nav bar is NOT pressed up against the top
+      document.body.style.paddingTop = 0;
+      document.body.classList.remove('fixed-nav');
+    }
+  }
+
+  window.addEventListener('scroll', fixNav);
+
 </script>
 
 </body>
