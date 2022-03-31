@@ -10,7 +10,7 @@
 
     <div class="voiceinator">
 
-      <h1>The Voiceinator 5000</h1>
+      <h1>The Voiceinator 69</h1>
 
       <select name="voice" id="voices">
         <option value="">Select A Voice</option>
@@ -35,6 +35,48 @@
   const options = document.querySelectorAll('[type="range"], [name="text"]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+
+  msg.text = document.querySelector('[name="text"]').value;
+
+  function populateVoices() {
+    // grabs voices from browser to populate in drop down
+    voices = this.getVoices();
+
+    //console.log(voices);
+    
+    //filter just filters it so only english options are in the drop down
+    voicesDropdown.innerHTML = voices
+      .filter(voice => voice.lang.includes('en'))
+      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
+      .join('');
+  }
+
+  function setVoice() {
+    // loops through and looks to have the option value in the drop down match the name value in the SpeechSynthesis property
+    msg.voice = voices.find(voice => voice.name === this.value)
+    toggle() // stops the voice and reset its every time you change lang
+  }
+
+  function toggle(startOver = true) {
+    speechSynthesis.cancel() // stops what was there already before changing lang
+    if (startOver) {
+      speechSynthesis.speak(msg)
+    }
+  }
+
+  function setOption() {
+    msg[this.name] = this.value;
+    // resets every time an option is changed
+    toggle()
+  }
+
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
+  voicesDropdown.addEventListener('change', setVoice);
+
+  options.forEach(option => option.addEventListener('change', setOption))
+  speakButton.addEventListener('click', toggle);
+  stopButton.addEventListener('click', () => toggle(false));
+
 </script>
 
 </body>
