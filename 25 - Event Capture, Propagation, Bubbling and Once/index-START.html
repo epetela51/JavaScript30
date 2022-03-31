@@ -43,6 +43,26 @@
 <button></button>
 <script>
 
+  let divs = document.querySelectorAll('div');
+  let button = document.querySelector('button')
+
+  function logText(e) {
+    console.log(this.classList.value);
+    // this stops the bubble up (or move down if capture is set to true) and records the click only on that one div or part of the page
+    e.stopPropagation();
+  }
+
+  // Capture true will cause it to stop at the bottom of the cascade from top down.  By default it's false which means it will then bubble back up from bottom to top
+  divs.forEach(div => div.addEventListener('click', logText, {capture: false}));
+
+  // Once True will allow you to only click or do something once.  It is like doing a 'removeEventListener'
+  // You would use this on something like a store check out so people can't buy/pay for something multiple times by accident
+  button.addEventListener('click', () => {
+    console.log('CLICK!!!');
+  }, {
+    once: true
+  })
+
 </script>
 </body>
 </html>
