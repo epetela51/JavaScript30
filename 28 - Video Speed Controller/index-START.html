@@ -15,6 +15,32 @@
   </div>
 
 <script>
+
+let speed = document.querySelector('.speed');
+let bar = speed.querySelector('.speed-bar');
+let video = document.querySelector('.flex');
+
+speed.addEventListener('mousemove', function (e) {
+  //offsetTop is because the bar might not be at the top so it gets the correct position of the slider relative to position on the page
+  let y = e.pageY - this.offsetTop
+  
+  //gets the percentage of the slider
+  let percent = y / this.offsetHeight;
+  let min = 0.5;
+  let max = 4;
+  let height = Math.round(percent * 100) + '%';
+  //Calculate the number on the speed bar
+  let playbackRate = percent * (max - min) + min;
+
+  //animate the bar for speed & update the playback number on the bar
+  bar.style.height = height;
+  bar.textContent = playbackRate.toFixed(2) + 'x';
+
+  video.playbackRate = playbackRate;
+
+
+})
+
 </script>
 </body>
 </html>
