@@ -142,10 +142,12 @@
     display: none;
   }
 
+  /*This brings the drop down from display of none onto the page*/
   .trigger-enter .dropdown {
     display: block;
   }
 
+  /*This is seperate as it is a delay for smoothness and makes it from 0 opacity (invisible) to in view*/
   .trigger-enter-active .dropdown {
     opacity: 1;
   }
@@ -220,6 +222,57 @@
 </style>
 
 <script>
+
+  let triggers = document.querySelectorAll('.cool > li');
+  let background = document.querySelector('.dropdownBackground');
+  let nav = document.querySelector('.top');
+
+  function handleEnter () {
+    this.classList.add('trigger-enter');
+    
+    //adds the class after 150 milliseconds.  The delay helps with transition
+    /*This way will have a delay effect where if you move to quickly between nav bars then it won't work correctly
+    
+    setTimeout(() => this.classList.add('trigger-enter-active'), 150) */
+    //correct
+    setTimeout(() => {
+      if(this.classList.contains('trigger-enter')) {
+        this.classList.add('trigger-enter-active')
+      }
+    }, 150);
+    
+    //add the background white color for the drop down
+    background.classList.add('open');
+
+    let dropdown = this.querySelector('.dropdown');
+    //get coordinates of where the drop down is on the page
+    let dropdownCoords = dropdown.getBoundingClientRect();
+    //get coordinates for the navbar
+    let navCoords = nav.getBoundingClientRect();
+
+    //create an object to hold the height and width of the drop down based on the drop down coordinates along with where on the page the background goes based on the navbar
+    //Top and left are subtracted because it is offsetting where on the page should be based on the navbar.  If the navbar gets pushed down due to content above then the drop down background adjusts
+    let coords = {
+      height: dropdownCoords.height,
+      width: dropdownCoords.width,
+      top: dropdownCoords.top - navCoords.top,
+      left: dropdownCoords.left - navCoords.left,
+    }
+
+    background.style.setProperty('width', `${coords.width}px`)
+    background.style.setProperty('height', `${coords.height}px`)
+    background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`)
+  }
+
+  function handleLeave() {
+    this.classList.remove('trigger-enter', 'trigger-enter-active');
+    background.classList.remove('open');
+  }
+
+  //triggers whenever the mouse goes over or 'enters' the button area or 'leaves' the area
+  triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
+  triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
+
 </script>
 
 </body>
