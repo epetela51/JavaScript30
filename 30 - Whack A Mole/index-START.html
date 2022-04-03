@@ -36,6 +36,62 @@
   const holes = document.querySelectorAll('.hole');
   const scoreBoard = document.querySelector('.score');
   const moles = document.querySelectorAll('.mole');
+  let lastHole;
+  let timeUp = false;
+  let score = 0;
+
+  //function that returns a random number before a min and max value
+  function randomTime(min, max) {
+    return Math.round(Math.random() * (max - min) + min);
+  }
+
+  //function to pick a random hole for the mole to pop up in
+  function randomHole(holes) {
+    let idx = Math.floor(Math.random() * holes.length);
+    let hole = holes[idx];
+    //if the same hole is being called again 2 times in a row....
+    if (hole === lastHole) {
+      console.log("that's the same hole breh")
+      //just run the function to get another random hole 
+      return randomHole(holes);
+    }
+
+    //holds the last hole that the mole popped out of.  This is for helping with duplicate holes back to back
+    lastHole = hole;
+    return hole;
+  }
+
+  //the moles popping up
+  function peep() {
+    let time = randomTime(200, 1000);
+    let hole = randomHole(holes);
+    hole.classList.add('up');
+
+    //after the amount of time goes by we need to remove the mole from the hole
+    setTimeout(() => {
+      hole.classList.remove('up');
+      //if timeup is ever set to true then run peep
+      if(!timeUp) peep()
+    }, time);
+  }
+
+  function startGame() {
+    scoreBoard.textContent = 0 // sets the scoreboard back to 0
+    timeUp = false // reset it back to false in case you want to play more than 1 game without reloading the page
+    score = 0;
+    peep() // run the game
+    //let the game run for a total of 10 seconds then stop it by swithing timeUp variable
+    setTimeout(() => timeUp = true, 10000)
+  }
+
+  function bonk(e) {
+    if(!e.isTrusted) return // this is someone tries to cheat using JS
+    score++;
+    this.classList.remove('up') // if you click a mole then the mouse should be removed by going back down
+    scoreBoard.textContent = score;
+  }
+
+  moles.forEach(mole => mole.addEventListener('click', bonk));
 
 </script>
 </body>
