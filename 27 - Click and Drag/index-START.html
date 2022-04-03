@@ -35,6 +35,40 @@
   </div>
 
 <script>
+
+  let slider = document.querySelector('.items');
+  //flag variable
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+    //varible holds the position of the mouse click and subtracts where in the box  it is (because the slider box is a smaller area within the page)
+    scrollLeft = slider.scrollLeft;
+    startX = e.pageX - slider.offsetLeft;
+  });
+
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
+
+slider.addEventListener('mouseup', () => {
+  isDown = false;
+  slider.classList.remove('active');
+  });
+
+slider.addEventListener('mousemove', (e) => {
+  if (!isDown) return // stops the function from running if the opposite is occuring
+  e.preventDefault() // stops default actions when move is moving
+  let x = e.pageX - slider.offsetLeft;
+  //tells how far we have moved from start position when moving mouse
+  let walk = x - startX;
+  slider.scrollLeft = scrollLeft - walk;
+  });
+
 </script>
 
   </body>
